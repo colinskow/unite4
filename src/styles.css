@@ -1,1 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  padding: 24px;
+}
+
+h1 {
+  text-align: center;
+}
+
+table.board {
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: grey;
+}
+
+table.board td {
+  width: 64px;
+  height: 64px;
+  padding: 4px;
+}
+
+.piece {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.piece.empty {
+  background-color: white;
+  cursor: pointer;
+}
+
+.piece.red {
+  background-color: red;
+}
+
+.piece.yellow {
+  background-color: yellow;
+}
+
+.spinner {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+

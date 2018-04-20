@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create Game</h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()" [disabled]="busy">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label for="createGameBet">Bet</label>
+      <input id="createGameBet" type="number" [(ngModel)]="bet">
+    </div>
+    <div class="form-group">
+      <label for="createGamePosition">Position</label>
+      <select class="form-control" id="createGamePosition" [(ngModel)]="first">
+        <option [value]="true">Player 1</option>
+        <option [value]="false">Player 2</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="createGameTimeLimit">Move Time Limit (minutes)</label>
+      <input id="createGameTimeLimit" type="number" [(ngModel)]="timeLimit">
+    </div>
+  </form>
+  <div class="spinner" *ngIf="busy"></div>
+  <div class="alert alert-danger" role="alert" *ngIf="error">
+    {{error}}
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="busy">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="createGame()" [disabled]="busy">CREATE</button>
+</div>

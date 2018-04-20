@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'u4-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'u4-static-game',
+  templateUrl: './static-game.component.html',
+  styleUrls: ['./static-game.component.css']
 })
 export class AppComponent implements OnInit {
   board = Array(6).fill(0).map(() => Array(7).fill(0));

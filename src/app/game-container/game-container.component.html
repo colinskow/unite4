@@ -1,0 +1,16 @@
+<select class="form-control" [(ngModel)]="selectedAccount">
+  <option *ngFor="let addr of filterAddresses()" [value]="addr">{{addr}}</option>
+</select>
+
+<u4-game
+    [state]="getState()"
+    [account]="selectedAccount"
+    [busy]="busy"
+    [canCallTimeout]="canCallTimeout"
+    (join)="onJoin()"
+    (proposeDraw)="onProposeDraw()"
+    (resign)="onResign()"
+    (callTimeout)="onCallTimeout()"
+    (withdraw)="onWithdraw()"
+    (makeMove)="onMakeMove($event)">
+</u4-game>

@@ -1,0 +1,25 @@
+<button>Create Game</button>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Address</th>
+      <th scope="col">Player1</th>
+      <th scope="col">Player2</th>
+      <th scope="col">Bet</th>
+      <th scope="col">Time Limit</th>
+      <th scope="col">Status</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let game of listGames()">
+      <td>{{game.address}}</td>
+      <td>{{game.p1_username || '?'}}</td>
+      <td>{{game.p2_username || '?'}}</td>
+      <td>{{game.bet}}</td>
+      <td>{{game.time_limit}}</td>
+      <td>{{game.status}}</td>
+    </tr>
+  </tbody>
+
+</table>

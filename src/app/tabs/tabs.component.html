@@ -1,0 +1,7 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item" *ngFor="let tab of getTabs()">
+    <a class="nav-link" href="#" [routerLink]="'games/' + tab.address" routerLinkActive="active">
+      {{tab.p1_username}} vs {{tab.p2_username}}
+    </a>
+  </li>
+</ul>
