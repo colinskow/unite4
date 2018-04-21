@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create Game</h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()" [disabled]="busy">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label for="createGameAccount">Account</label>
+      <select class="form-control" id="createGameAccount" name="account" [(ngModel)]="account">
+        <option *ngFor="let account of getAccounts()" [value]="account">
+          {{account}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="registerUsername">Username</label>
+      <input id="registerUsername" name="username" type="text" [(ngModel)]="username">
+    </div>
+  </form>
+  <div class="spinner" *ngIf="busy"></div>
+  <div class="alert alert-danger" role="alert" *ngIf="error">
+    {{error}}
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="busy">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="register()" [disabled]="busy">Create</button>
+</div>
+  

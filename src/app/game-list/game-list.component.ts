@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GameMasterService, GameListing } from '../services/game-master.service';
 import { CreateGameComponent } from './create-game/create-game.component';
+import { RegisterComponent } from './register/register.component';
 
 @Component({
   selector: 'u4-game-list',
   templateUrl: './game-list.component.html',
   styleUrls: ['./game-list.component.css']
 })
-export class GameListComponent {
+export class GameListComponent implements OnDestroy {
 
   createGameDialog = false;
   dialogBusy = false;
@@ -16,7 +17,9 @@ export class GameListComponent {
   joining: { [game: string]: boolean } = {};
   joined: { [game: string]: boolean } = {};
 
-  constructor(private gm: GameMasterService, private modalService: NgbModal) { }
+  constructor(private gm: GameMasterService, private modalService: NgbModal) {
+    this.gm.setupListeners();
+  }
 
   listGames() {
     return this.gm.listGames();
@@ -36,8 +39,16 @@ export class GameListComponent {
       });
   }
 
-  openCreateGame(ref) {
+  openCreateGame() {
     this.modalService.open(CreateGameComponent);
+  }
+
+  openRegister() {
+    this.modalService.open(RegisterComponent);
+  }
+
+  ngOnDestroy() {
+    this.gm.disconnect();
   }
 
 }

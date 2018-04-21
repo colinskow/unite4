@@ -21,6 +21,10 @@ contract GameMaster {
     event GameOver(address game_contract, address player1, address player2, uint8 result);
 
 
+    function getGames() public view returns (Unite4[]) {
+        return games;
+    }
+
     function register(string _name) public returns (bool success) {
         require(bytes(_name).length <= 32);
         usernames[msg.sender] = _name;

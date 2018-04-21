@@ -1,8 +1,8 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Unite4 } from '../services/unite4';
 import { Web3Service } from '../services/web3.service';
-import { pbkdf2 } from 'crypto';
 import { GameMasterService } from '../services/game-master.service';
 
 @Component({
@@ -12,7 +12,6 @@ import { GameMasterService } from '../services/game-master.service';
 })
 export class GameContainerComponent implements OnDestroy {
 
-  @Input()
   get gameAddress(): string {
     return this._gameAddress;
   }
@@ -43,10 +42,17 @@ export class GameContainerComponent implements OnDestroy {
   canCallTimeout = false;
 
   private _gameAddress: string;
-  private _timeout: NodeJS.Timer;
+  private _timeout: any;
   private _subs: Subscription[] = [];
 
-  constructor(private w3: Web3Service, private gm: GameMasterService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private w3: Web3Service,
+    private gm: GameMasterService
+  ) {
+    const sub = this.route.params.subscribe(params => this.gameAddress = params.address);
+    this._subs.push(sub);
+  }
 
   ngOnDestroy() {
     this._subs.forEach(sub => sub.unsubscribe());

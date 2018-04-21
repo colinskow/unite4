@@ -38,6 +38,11 @@ export interface GameOverEvent {
   result: number;
 }
 
+export interface AccountPair {
+  account: string;
+  username: string;
+}
+
 export interface TabState {
   address: string;
   p1_username: string;
@@ -111,13 +116,21 @@ export class GameMasterService {
   }
 
   setupListeners() {
-    ['usernames', 'wins', 'losses', 'game_state', 'games']
+    /* ['usernames', 'wins', 'losses', 'game_state', 'games']
       .forEach(key => {
         this.gameMaster.methods[key]().call()
-          .then(result => this.state = { ...this.state, [key]: result })
+          .then(result => {
+            console.log(key, result);
+            this.state = { ...this.state, [key]: result };
+          })
           .catch(err => console.log(err));
-      });
-    this.state.games.forEach(address => this.onGameCreated(address));
+      }); */
+    this.gameMaster.methods.getGames().call()
+      .then(result => {
+        this.state = { ...this.state, games: result };
+        this.state.games.forEach(address => this.onGameCreated(address));
+      })
+      .catch(err => console.error(err));
     const sub1 = this.events$.GameCreated
       .subscribe((ev: GameCreatedEvent) => {
         this.state = {
@@ -129,6 +142,7 @@ export class GameMasterService {
       });
     const sub2 = this.events$.UserRegistered
       .subscribe((ev: UserRegisteredEvent) => {
+        console.log('User registered', ev);
         this.state = {
           ...this.state,
           usernames: { ...this.state.usernames, [ev.player]: ev.username },
@@ -171,21 +185,44 @@ export class GameMasterService {
   }
 
   onGameCreated(address: string) {
-    this.gameContracts[address] = new Unite4(address, this.w3);
-    this.gameContracts[address].basicListeners();
+    const game = new Unite4(address, this.w3);
+    game.basicListeners()
+      .then(() => {
+        // Lookup the usernames of the players and save them to the state
+        return Promise.all([
+          this.lookupUser(game.state.p1),
+          this.lookupUser(game.state.p2)
+        ]);
+      })
+      .catch(err => console.error(err));
+    this.gameContracts[address] = game;
+  }
+
+  lookupUser(address: string) {
+    const promises = ['usernames', 'wins', 'losses']
+      .map(key => {
+        return this.gameMaster.methods[key].call(address)
+          .then(result => {
+            console.log(key, address, result);
+            const table = { ...this.state[key], [address]: result };
+            this.state = { ...this.state, [key]: table };
+          });
+      });
+    return Promise.all(promises);
   }
 
   getGameState(address: string) {
     return this.gameContracts[address].state;
   }
 
-  register(name: string) {
-    return this.gameMaster.methods.register(name).send();
+  register(address: string, name: string) {
+    return this.gameMaster.methods.register(name).send({ from: address });
   }
 
-  createGame(bet: number, first: boolean, timeLimit: number) {
-    const betWei = this.w3.toWei(bet, 'ether');
-    return this.gameMaster.methods.createGame(betWei, first, timeLimit).send();
+  createGame(account: string, bet: string, first: boolean, timeLimit: number) {
+    const betWei = this.w3.toWei(bet as any, 'ether');
+    return this.gameMaster.methods.createGame(betWei, first, timeLimit)
+      .send({ from: account, value: betWei });
   }
 
   joinGame(address: string, account: string) {
@@ -255,6 +292,12 @@ export class GameMasterService {
 
   getAccounts() {
     return this.accounts;
+  }
+
+  getRegisteredAccounts(): AccountPair[] {
+    return this.accounts
+      .filter(acct => !!this.state.usernames[acct])
+      .map(acct => ({ account: acct, username: this.state.usernames[acct] }));
   }
 
   getTabs() {

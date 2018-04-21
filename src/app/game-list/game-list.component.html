@@ -1,4 +1,7 @@
-<button>Create Game</button>
+<div class="row">
+    <button class="btn btn-primary margins" (click)="openRegister()">Register</button>
+    <button class="btn btn-success margins" (click)="openCreateGame()">Create Game</button>
+</div>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -19,6 +22,9 @@
       <td>{{game.bet}}</td>
       <td>{{game.time_limit}}</td>
       <td>{{game.status}}</td>
+      <td>
+        <button class="btn btn-info btn-sm" [routerLink]="'/games/' + game.address">View</button>
+      </td>
     </tr>
   </tbody>
 

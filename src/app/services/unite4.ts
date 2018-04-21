@@ -5,7 +5,6 @@ import { Contract, EventEmitter, EventLog } from 'web3/types';
 import { createListener } from './utils';
 import { Web3Service } from './web3.service';
 import * as unite4Artifact from '../../../build/contracts/Unite4.json';
-import { listeners } from 'cluster';
 
 export interface PositionEvent {
   player: string;

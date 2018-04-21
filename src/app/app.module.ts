@@ -12,6 +12,7 @@ import { GameContainerComponent } from './game-container/game-container.componen
 import { GameListComponent } from './game-list/game-list.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { CreateGameComponent } from './game-list/create-game/create-game.component';
+import { RegisterComponent } from './game-list/register/register.component';
 
 @NgModule({
   declarations: [
@@ -20,8 +21,10 @@ import { CreateGameComponent } from './game-list/create-game/create-game.compone
     GameContainerComponent,
     GameListComponent,
     TabsComponent,
-    CreateGameComponent
+    CreateGameComponent,
+    RegisterComponent
   ],
+  entryComponents: [CreateGameComponent, RegisterComponent],
   imports: [
     BrowserModule,
     FormsModule,

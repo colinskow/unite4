@@ -22,11 +22,12 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^1.1.2",
+    "bignumber.js": "^6.0.0",
     "bootstrap": "^4.1.0",
     "core-js": "^2.4.1",
     "ng-bootstrap": "^1.6.3",
     "rxjs": "^5.5.6",
-    "web3": "^1.0.0-beta.33",
+    "web3": "^1.0.0-beta.34",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {

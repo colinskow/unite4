@@ -7,8 +7,11 @@ export function createListener(
   subj: Subject<Object> = new Subject(),
   listeners: EventEmitter[] = null
 ): Subject<Object> {
-  const listener = contract.events[event]()
-    .on('data', data => subj.next(data.returnValues))
+  const listener = contract.events[event]({ fromBlock: 0 })
+    .on('data', data => {
+      console.log(event, data);
+      subj.next(data.returnValues);
+    })
     .on('changed', () => subj.complete())
     .on('error', err => subj.error(err));
   if (listeners) {

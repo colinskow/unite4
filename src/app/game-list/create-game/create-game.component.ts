@@ -11,16 +11,24 @@ export class CreateGameComponent {
 
   busy = false;
   error = '';
-  bet = 0;
+  account: string;
+  bet = '0';
   first = true;
   timeLimit = 1440;
 
-  constructor(private activeModal: NgbActiveModal, private gm: GameMasterService) { }
+  constructor(private activeModal: NgbActiveModal, private gm: GameMasterService) {
+    const accounts = this.getRegisteredAccounts();
+    if (!accounts || !accounts.length) {
+      this.account = '';
+    } else {
+      this.account = accounts[0].account;
+    }
+  }
 
   createGame() {
     this.busy = true;
     this.error = '';
-    this.gm.createGame(this.bet, this.first, this.timeLimit)
+    this.gm.createGame(this.account, this.bet, this.first, this.timeLimit)
       .then(() => {
         this.busy = false;
         this.activeModal.close();
@@ -28,7 +36,12 @@ export class CreateGameComponent {
       .catch(err => {
         this.busy = false;
         this.error = err.message;
+        console.error(err);
       });
+  }
+
+  getRegisteredAccounts() {
+    return this.gm.getRegisteredAccounts();
   }
 
   close() {
